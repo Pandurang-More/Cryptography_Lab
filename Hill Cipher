@@ -1,0 +1,154 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> multiplyMatrix(vector<vector<int>> &key, vector<int> &text)
+{
+    vector<int> result(2);
+    result[0] = (key[0][0] * text[0] + key[0][1] * text[1]) % 26;
+    result[1] = (key[1][0] * text[0] + key[1][1] * text[1]) % 26;
+    return result;
+}
+
+int modInverse(int a)
+{
+    a = (a % 26 + 26) % 26;
+    for (int x = 1; x < 26; x++)
+    {
+        if ((a * x) % 26 == 1)
+            return x;
+    }
+    return -1;
+}
+
+vector<vector<int>> inverseKey(vector<vector<int>> &key)
+{
+    int det = key[0][0] * key[1][1] - key[0][1] * key[1][0];
+    det = (det % 26 + 26) % 26;
+    int invDet = modInverse(det);
+
+    if (invDet == -1)
+    {
+        cout << "Key matrix is not invertible under mod 26!" << endl;
+        exit(0);
+    }
+
+    vector<vector<int>> inv(2, vector<int>(2));
+    inv[0][0] = ( key[1][1] * invDet) % 26;
+    inv[0][1] = ((-key[0][1] + 26) * invDet) % 26;
+    inv[1][0] = ((-key[1][0] + 26) * invDet) % 26;
+    inv[1][1] = ( key[0][0] * invDet) % 26;
+
+    return inv;
+}
+
+string encryption(vector<vector<int>> &key, string s)
+{
+    if (s.length() % 2 != 0)
+        s += 'x';
+
+    string result = "";
+    for (int i = 0; i < s.length(); i += 2)
+    {
+        char c1 = s[i], c2 = s[i + 1];
+        int base1 = (isupper(c1) ? 'A' : 'a');
+        int base2 = (isupper(c2) ? 'A' : 'a');
+
+        if (isalpha(c1) && isalpha(c2))
+        {
+            vector<int> text = {(c1 - base1), (c2 - base2)};
+            vector<int> enc = multiplyMatrix(key, text);
+            result += char(enc[0] + base1);
+            result += char(enc[1] + base2);
+        }
+        else
+        {
+            result += c1;
+            result += c2;
+        }
+    }
+    return result;
+}
+
+string Decryption(vector<vector<int>> &key, string s)
+{
+    vector<vector<int>> invKey = inverseKey(key);
+
+    string result = "";
+    for (int i = 0; i < s.length(); i += 2)
+    {
+        char c1 = s[i], c2 = s[i + 1];
+        int base1 = (isupper(c1) ? 'A' : 'a');
+        int base2 = (isupper(c2) ? 'A' : 'a');
+
+        if (isalpha(c1) && isalpha(c2))
+        {
+            vector<int> text = {(c1 - base1), (c2 - base2)};
+            vector<int> dec = multiplyMatrix(invKey, text);
+            result += char(dec[0] + base1);
+            result += char(dec[1] + base2);
+        }
+        else
+        {
+            result += c1;
+            result += c2;
+        }
+    }
+    return result;
+}
+
+int main()
+{
+    cout << "********** Hill Cipher (2x2) **********\n";
+    cout << "What do you want to do? \n Encryption(1) or Decryption(2)\n";
+
+    int choice;
+    cin >> choice;
+
+    string s;
+    vector<vector<int>> key(2, vector<int>(2));
+
+    cout << "Enter 2x2 key matrix (space separated):\n";
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            cin >> key[i][j];
+        }
+    }
+
+    int det = key[0][0] * key[1][1] - key[0][1] * key[1][0];
+    det = (det % 26 + 26) % 26;
+    int invDet = modInverse(det);
+
+    if (invDet == -1)
+    {
+        cout << "Key matrix is NOT invertible under mod 26! Choose another key.\n";
+        return 0;
+    }
+
+    if (choice == 1)
+    {
+        cout << "Enter the string for encryption: \n";
+        cin.ignore();
+        getline(cin, s);
+
+        cout << "Encrypted string is:\n";
+        cout << encryption(key, s) << endl;
+    }
+    else if (choice == 2)
+    {
+        cout << "Enter the string for decryption: \n";
+        cin.ignore();
+        getline(cin, s);
+
+        cout << "Decrypted string is:\n";
+        cout << Decryption(key, s) << endl;
+    }
+    else
+    {
+        cout << "Invalid Input\n";
+    }
+
+    return 0;
+}
