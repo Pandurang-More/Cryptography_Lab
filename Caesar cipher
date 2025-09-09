@@ -1,0 +1,77 @@
+#include<iostream>
+using namespace std;
+
+
+
+ string encryption (int k,string s)
+    {
+    for(int i=0;i<s.length();i++)
+    {
+        if(s[i]>='a' && s[i]<='z') 
+        {
+            s[i]=(s[i]-'a'+k)%26+'a';
+        }
+        else if(s[i]>='A' && s[i]<='Z')
+        {
+            s[i]=(s[i]-'A'+k)%26+'A';
+        }
+    }
+    return s;
+  }     
+  
+
+
+   string  Decryption (int k,string s)
+    {
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]>='a' && s[i]<='z') 
+            {
+                s[i]=(s[i]-'a'-k+26)%26+'a';
+            }
+            else if(s[i]>='A' && s[i]<='Z')
+            {
+                s[i]=(s[i]-'A'-k+26)%26+'A';
+            }
+        }
+        
+        return s;
+    }
+int main()
+{    
+
+     cout<<"**********Caesar Cipher**********\n";
+     cout<<"what do you want to do? \n Encryption(1) or Decryption(2)\n";
+    int choice;
+    cin>>choice;
+    string s;
+    int k;
+    if(choice==1)
+    {
+        cout<<"Enter the string for encryption: \n";
+        cin.ignore();
+        getline(cin,s);
+        cout<<"Enter the key for encryption:\n";
+        cin>>k;
+        cout<<"Encrypted string is: \n";
+        cout<< encryption(k,s)<<endl;
+    }
+    else if(choice==2)
+    {
+        cout<<"Enter the string for Decryption: \n";
+        cin.ignore();
+        getline(cin,s);
+        cout<<"Enter the key for Decryption:\n";
+        cin>>k;
+        cout<<"Decrypted string is:\n ";
+        cout<<Decryption(k,s)<<endl;
+    }
+    else
+    {
+        cout<<"Invalid Input\n";
+    }
+
+    
+
+    return 0;
+}
