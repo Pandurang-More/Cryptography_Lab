@@ -1,3 +1,24 @@
+Explanation of the Code :
+The program implements the Caesar Cipher, a simple encryption technique where each
+letter in the text is shifted by a fixed number of positions in the alphabet.
+
+1. Encryption Function (encryption)
+o Takes a key k and a string s.
+o Shifts each alphabetic character by k positions.
+o Works separately for uppercase (A–Z) and lowercase (a–z).
+
+2.Decryption Function (Decryption)
+o Reverses the process by shifting each character backward by k positions.
+o Ensures correct results by adding +26 before applying modulo %26 to handle negative shifts.
+
+3. Main Function
+o Asks the user whether they want to Encrypt or Decrypt.
+o Takes the input string and key value.
+o Calls the appropriate function and prints the result.
+
+
+
+
 #include<iostream>
 using namespace std;
 
