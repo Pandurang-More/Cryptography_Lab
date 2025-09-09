@@ -1,3 +1,45 @@
+
+Explanation of Hill Cipher Program:
+This program implements the Hill Cipher using a 2×2 key matrix.
+
+1.Key Matrix
+o The user enters a 2×2 matrix as the key.
+o The determinant of this matrix must be coprime with 26 (gcd(det,26)=1).
+o If the matrix is not invertible, decryption cannot be done.
+
+2.Encryption
+o The plaintext is divided into pairs of letters.
+o Each letter is converted into numbers (A=0, B=1, …, Z=25).
+o The key matrix is multiplied with this number vector.
+o The result is taken mod 26 and converted back to letters to form the ciphertext.
+o If the plaintext length is odd, one extra letter “x” is added to make it even.
+
+
+3.Decryption
+o The program calculates the inverse of the key matrix (mod 26).
+o Ciphertext letters are multiplied with the inverse key matrix to get back the plaintext.
+o If an extra “x” was added during encryption, it may appear at the end of the decrypted message.
+
+4.Case Handling
+o The program works with both uppercase and lowercase letters.
+o Non-alphabetic characters like spaces are kept as they are.
+
+Note:
+The same key matrix must be used for both encryption and decryption. 
+If the key matrix is not invertible mod 26, then decryption is not possible.
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <iostream>
 #include <vector>
 using namespace std;
